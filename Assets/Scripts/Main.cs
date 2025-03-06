@@ -16,11 +16,24 @@ public class Main : MonoBehaviour
     float foodTimer;
     public float foodTimerMax;
 
+    // UI
+    [SerializeField] Canvas canvas;
+    [SerializeField] UIManager uiManager;
+
+    // 进度
+    int progress;
+    bool progressTip;
+    float progressProbability; // 到下一进度的概率
+
     void Awake()
     {
         foodNum = 0;
         foodTimer = foodTimerMax;
         foodPos = new List<Vector2>();
+
+        progress = 0;
+        progressTip = false;
+        progressProbability = 1;
     }
 
     void Start()
@@ -33,7 +46,10 @@ public class Main : MonoBehaviour
         float dt = Time.deltaTime;
         GetKeyDown();
 
-        // 食物生成
+        // 进度
+        ProgressTip();
+
+        // 生成食物
         if (foodNum >= foodNumMax) { return; }
 
         foodTimer += dt;
@@ -50,9 +66,11 @@ public class Main : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             player.EnterFishing();
+            ChangeProgress();
         }
     }
 
+    #region 生成食物
     void SpawnFood()
     {
         int len = foods.Count - 1;
@@ -94,4 +112,40 @@ public class Main : MonoBehaviour
         food.SpawnFood(foodGroup, pos);
         foodPos.Add(pos);
     }
+    #endregion
+
+    #region 进度
+    void ProgressTip()
+    {
+        if (!progressTip)
+        {
+            switch (progress)
+            {
+                case 0:
+                    uiManager.Tip_Show(canvas, "按E键开始钓鱼");
+                    break;
+                case 1:
+                    uiManager.Tip_Show(canvas, "树上好像有些吃的");
+                    break;
+            }
+            progressTip = true;
+        }
+    }
+
+    void ChangeProgress()
+    {
+        float random = UnityEngine.Random.value;
+
+        if (random < progressProbability)
+        {
+            progress += 1;
+            progressTip = false;
+            progressProbability = 0;
+        }
+        else
+        {
+            progressProbability += 0.1f;
+        }
+    }
+    #endregion
 }
