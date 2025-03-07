@@ -254,16 +254,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 972434131}
   foods:
-  - {fileID: 6748206513413674793, guid: fe495b27edb00674c8901347b3b77d68, type: 3}
-  - {fileID: 918268310807672338, guid: d2c2e3fc872cde54494c0029fef8fcac, type: 3}
-  - {fileID: 1318970063160085830, guid: b0d53232f8b66714abf7bbbab5c0402e, type: 3}
-  - {fileID: 4819659853613575885, guid: d832314176ab86142a8674cc98e56292, type: 3}
-  - {fileID: 6428080235408160326, guid: d739747dacf7dc34794667d51effda97, type: 3}
-  - {fileID: 4301469850196486696, guid: 602a87db182f7144a95a13a9aa8d622f, type: 3}
-  - {fileID: 7610359597606070386, guid: a0afbf0c02f308f41be3841b55cc1267, type: 3}
-  - {fileID: 7175269369877424919, guid: 0fb4f70b2bb76084090fa0ea86bde15b, type: 3}
-  - {fileID: 7932108858504827361, guid: e5934413099bdfe4db718f430ffab7ab, type: 3}
-  - {fileID: 1640143908070292966, guid: 7de3f22548337184a8600f95daab5800, type: 3}
+  - {fileID: 1396904469801477454, guid: fe495b27edb00674c8901347b3b77d68, type: 3}
+  - {fileID: 4073882545454194334, guid: d2c2e3fc872cde54494c0029fef8fcac, type: 3}
+  - {fileID: 6755802678079141644, guid: b0d53232f8b66714abf7bbbab5c0402e, type: 3}
+  - {fileID: 4329157249118173687, guid: d832314176ab86142a8674cc98e56292, type: 3}
+  - {fileID: 3060884552366694681, guid: d739747dacf7dc34794667d51effda97, type: 3}
+  - {fileID: 8393226200953652774, guid: 602a87db182f7144a95a13a9aa8d622f, type: 3}
+  - {fileID: 4266769091057009042, guid: a0afbf0c02f308f41be3841b55cc1267, type: 3}
+  - {fileID: 8302600448954762704, guid: 0fb4f70b2bb76084090fa0ea86bde15b, type: 3}
+  - {fileID: 3394818237826899517, guid: e5934413099bdfe4db718f430ffab7ab, type: 3}
+  - {fileID: 6318461979381872358, guid: 7de3f22548337184a8600f95daab5800, type: 3}
   foodGroup: {fileID: 1576017632}
   foodNumMax: 5
   foodTimerMax: 5
@@ -547,6 +547,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tip: {fileID: 6250037639976830874, guid: ee46aa2aac7e5fe4bb066860efc4f490, type: 3}
+  menu: {fileID: 3828012435185786170, guid: e01da2790cf461543b193641f6bdd351, type: 3}
+  think: {fileID: 7200415755924910846, guid: ec05ccd4728b3eb4cb41ca3c504b1980, type: 3}
 --- !u!1 &501574191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,7 +1375,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1576017632}
   m_Father: {fileID: 159529363}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1658,7 +1661,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1620187380}
+  m_Father: {fileID: 1248912003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1608309041
 GameObject:
@@ -1794,7 +1797,6 @@ Transform:
   - {fileID: 184173249}
   - {fileID: 814577386}
   - {fileID: 717071752}
-  - {fileID: 1576017632}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1623688730

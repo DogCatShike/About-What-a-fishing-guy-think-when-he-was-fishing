@@ -38,7 +38,7 @@ public class Main : MonoBehaviour
 
     void Start()
     {
-
+        uiManager.Menu_Show(canvas);
     }
 
     void Update()
@@ -59,6 +59,9 @@ public class Main : MonoBehaviour
             foodTimer = 0;
             foodNum += 1;
         }
+
+        // 胡思乱想
+        uiManager.Think_SetColor(dt);
     }
 
     void GetKeyDown()
@@ -67,6 +70,7 @@ public class Main : MonoBehaviour
         {
             player.EnterFishing();
             ChangeProgress();
+            uiManager.Think_Show(canvas); //
         }
     }
 
@@ -109,7 +113,7 @@ public class Main : MonoBehaviour
             }
         }
 
-        food.SpawnFood(foodGroup, pos);
+        food.SpawnFood(foodGroup, pos, canvas);
         foodPos.Add(pos);
     }
     #endregion

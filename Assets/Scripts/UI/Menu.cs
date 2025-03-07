@@ -2,13 +2,17 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tip : MonoBehaviour
+public class Menu : MonoBehaviour
 {
-    Text text;
+    RectTransform rect;
+    Button button;
 
     public void Ctor()
     {
-        text = GetComponent<Text>();
+        rect = GetComponent<RectTransform>();
+        button = GetComponent<Button>();
+
+        button.onClick.AddListener(OnButtonClick);
     }
 
     public GameObject Spawn(Canvas canvas)
@@ -17,9 +21,13 @@ public class Tip : MonoBehaviour
         return go;
     }
 
-    public void Show(string text)
+    void OnButtonClick()
     {
-        this.text.text = text;
+        Debug.Log("Menu Clicked");
+    }
+
+    public void Show()
+    {
         gameObject.SetActive(true);
     }
 
