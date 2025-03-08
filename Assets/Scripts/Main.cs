@@ -28,7 +28,7 @@ public class Main : MonoBehaviour
     void Awake()
     {
         uiManager.Ctor(canvas);
-        
+
         foodNum = 0;
         foodTimer = foodTimerMax;
         foodPos = new List<Vector2>();
@@ -52,6 +52,7 @@ public class Main : MonoBehaviour
         ProgressTip();
 
         // 生成食物
+        foodNum = foodGroup.childCount;
         if (foodNum >= foodNumMax) { return; }
 
         foodTimer += dt;
@@ -59,7 +60,6 @@ public class Main : MonoBehaviour
         {
             SpawnFood();
             foodTimer = 0;
-            foodNum += 1;
         }
 
         // 胡思乱想
@@ -114,7 +114,7 @@ public class Main : MonoBehaviour
             }
         }
 
-        food.SpawnFood(foodGroup, pos, canvas);
+        uiManager.Food_Show(food, pos, foodGroup);
         foodPos.Add(pos);
     }
     #endregion

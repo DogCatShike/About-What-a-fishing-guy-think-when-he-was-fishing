@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Menu menu;
     [SerializeField] Think think;
     [SerializeField] Pause pause;
+    [SerializeField] Bag bag;
 
     public void Ctor(Canvas canvas)
     {
@@ -89,7 +90,7 @@ public class UIManager : MonoBehaviour
 
         if (ui == null) { return; }
         if (ui.isShow) { return; }
-        
+
         ui.SetColor(dt);
     }
     #endregion
@@ -120,6 +121,67 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region Bag
+    public void Bag_Show()
+    {
+        var ui = uiContext.bag;
+        if (ui == null)
+        {
+            ui = bag.Spawn(canvas).GetComponent<Bag>();
+
+            ui.OnAllClick = () => OnAllClick();
+            ui.OnFoodClick = () => OnFoodClick();
+            ui.OnFishClick = () => OnFishClick();
+            ui.OnLastPageClick = () => OnLastPageClick();
+            ui.OnNextPageClick = () => OnNextPageClick();
+            ui.OnCloseClick = () => OnCloseClick();
+        }
+        ui.Ctor();
+
+        var elements = uiContext.bagElements;
+        ui.Show(elements);
+        uiContext.bag = ui;
+    }
+
+    public void Bag_Close()
+    {
+        var ui = uiContext.bag;
+        if (ui == null) { return; }
+        ui.Close();
+        uiContext.bag = null;
+    }
+
+    public void Bag_Add(int id, Sprite sprite, Type type)
+    {
+        int len = uiContext.bagElements.Count;
+        for (int i = 0; i < len; i++)
+        {
+            BagElement element = uiContext.bagElements[i];
+            if (element.id == id)
+            {
+                element.number += 1;
+                return;
+            }
+        }
+
+        BagElement newelement = new BagElement();
+        newelement.Ctor();
+        newelement.Init(id, sprite, type);
+        uiContext.bagElements.Add(newelement);
+    }
+    #endregion
+
+    #region Food
+    public void Food_Show(Food food, Vector2 pos, Transform foodGroup)
+    {
+        var ui = food.Spawn(foodGroup).GetComponent<Food>();
+        ui.OnFoodClick = () => OnTreeFoodClick(food.id, food.sprite, food.type);
+        ui.Ctor();
+        ui.Show();
+        ui.SetPos(pos, canvas);
+    }
+    #endregion
+
     #region Event
     // Menu
     public void OnMenuClick(Menu ui)
@@ -146,12 +208,49 @@ public class UIManager : MonoBehaviour
 
     public void OnBagClick()
     {
-        Debug.Log("打开背包");
+        Bag_Show();
     }
 
     public void OnQuitClick()
     {
         Debug.Log("退出游戏");
+    }
+
+    // Bag
+    public void OnAllClick()
+    {
+        Debug.Log("全部");
+    }
+
+    public void OnFoodClick()
+    {
+        Debug.Log("食物");
+    }
+
+    public void OnFishClick()
+    {
+        Debug.Log("鱼");
+    }
+
+    public void OnLastPageClick()
+    {
+        Debug.Log("上一页");
+    }
+
+    public void OnNextPageClick()
+    {
+        Debug.Log("下一页");
+    }
+
+    public void OnCloseClick()
+    {
+        Bag_Close();
+    }
+
+    // Food
+    void OnTreeFoodClick(int id, Sprite sprite, Type type)
+    {
+        Bag_Add(id, sprite, type);
     }
     #endregion
 }

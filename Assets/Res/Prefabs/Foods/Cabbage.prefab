@@ -133,3 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65acac9d3af120d42b3d570460d17c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 3
+  type: 1
+  sprite: {fileID: 21300000, guid: 94045e139aca17b4a82751fe112416a3, type: 3}
