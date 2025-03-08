@@ -12,7 +12,6 @@ public class Pause : MonoBehaviour
     public Action OnBagClick;
     public Action OnQuitClick;
 
-
     public void Ctor()
     {
         btn_Back.onClick.AddListener(() => OnBackClick?.Invoke());

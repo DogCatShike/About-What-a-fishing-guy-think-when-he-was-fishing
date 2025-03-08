@@ -1,5 +1,7 @@
 using System;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,11 +13,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] Think think;
     [SerializeField] Pause pause;
     [SerializeField] Bag bag;
+    [SerializeField] MakeSure makeSure;
+
+    [SerializeField] Letter letter;
+
+    public int foodID;
 
     public void Ctor(Canvas canvas)
     {
         uiContext = new UIContext();
         this.canvas = canvas;
+
+        foodID = -1;
     }
 
     #region Tip
@@ -135,8 +144,11 @@ public class UIManager : MonoBehaviour
             ui.OnLastPageClick = () => OnLastPageClick();
             ui.OnNextPageClick = () => OnNextPageClick();
             ui.OnCloseClick = () => OnCloseClick();
+
+            ui.OnPlaidClick = (id) => OnPlaidClick(id);
         }
         ui.Ctor();
+        ui.ClearAll();
 
         var elements = uiContext.bagElements;
         ui.Show(elements);
@@ -169,6 +181,25 @@ public class UIManager : MonoBehaviour
         newelement.Init(id, sprite, type);
         uiContext.bagElements.Add(newelement);
     }
+
+    public void Bag_Use(int id)
+    {
+        for (int i = uiContext.bagElements.Count - 1; i >= 0; i--)
+        {
+            BagElement element = uiContext.bagElements[i];
+            if (element.id == id)
+            {
+                element.number -= 1;
+
+                if (element.number <= 0)
+                {
+                    uiContext.bagElements.Remove(element);
+                }
+            }
+        }
+
+        Bag_Show();
+    }
     #endregion
 
     #region Food
@@ -179,6 +210,55 @@ public class UIManager : MonoBehaviour
         ui.Ctor();
         ui.Show();
         ui.SetPos(pos, canvas);
+    }
+    #endregion
+
+    #region MakeSure
+    public void MakeSure_Show(int a)
+    {
+        var ui = uiContext.makeSure;
+        if (ui == null)
+        {
+            ui = makeSure.Spawn(canvas).GetComponent<MakeSure>();
+
+            ui.OnSureClick += OnSureClick;
+            ui.OnNoClick = () => OnNoClick();
+        }
+        ui.Ctor(a);
+        ui.Show();
+        uiContext.makeSure = ui;
+    }
+
+    public void MakeSure_Close()
+    {
+        var ui = uiContext.makeSure;
+        if (ui == null) { return; }
+        ui.Close();
+        uiContext.makeSure = null;
+    }
+    #endregion
+
+    #region Letter
+    public void Letter_Show()
+    {
+        var ui = uiContext.letter;
+        if (ui == null)
+        {
+            ui = letter.Spawn(canvas).GetComponent<Letter>();
+
+            ui.OnCloseClick = () => OnLetterCloseClick();
+        }
+        ui.Ctor();
+        ui.Show();
+        uiContext.letter = ui;
+    }
+
+    public void Letter_Close()
+    {
+        var ui = uiContext.letter;
+        if (ui == null) { return; }
+        ui.Close();
+        uiContext.letter = null;
     }
     #endregion
 
@@ -203,7 +283,7 @@ public class UIManager : MonoBehaviour
     // Pause
     public void OnBackClick()
     {
-        Debug.Log("返回主界面");
+        MakeSure_Show(0);
     }
 
     public void OnBagClick()
@@ -213,7 +293,7 @@ public class UIManager : MonoBehaviour
 
     public void OnQuitClick()
     {
-        Debug.Log("退出游戏");
+        MakeSure_Show(1);
     }
 
     // Bag
@@ -247,10 +327,53 @@ public class UIManager : MonoBehaviour
         Bag_Close();
     }
 
+    public void OnPlaidClick(int id)
+    {
+        if (foodID != -1)
+        {
+            Debug.Log("已经有鱼饵了");
+            return;
+        }
+
+        Bag_Use(id);
+        foodID = id;
+    }
+
     // Food
     void OnTreeFoodClick(int id, Sprite sprite, Type type)
     {
         Bag_Add(id, sprite, type);
+    }
+
+    // MakeSure
+    public void OnSureClick(int a)
+    {
+        if (a == 0)
+        {
+            SceneManager.LoadScene(0);
+        }
+        else if (a == 1)
+        {
+            Application.Quit();
+        }
+    }
+
+    public void OnNoClick()
+    {
+        MakeSure_Close();
+        Pause_Close();
+        Time.timeScale = 1;
+    }
+
+    // Letter
+    public void LoginLetterClick()
+    {
+        Letter_Show();
+    }
+
+    void OnLetterCloseClick()
+    {
+        Letter_Close();
     }
     #endregion
 }

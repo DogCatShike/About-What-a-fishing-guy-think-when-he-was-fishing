@@ -23,6 +23,8 @@ public class Bag : MonoBehaviour
     public Action OnNextPageClick;
     public Action OnCloseClick;
 
+    public Action<int> OnPlaidClick;
+
     public void Ctor()
     {
         btn_All.onClick.AddListener(() => OnAllClick?.Invoke());
@@ -49,13 +51,29 @@ public class Bag : MonoBehaviour
             BagElement element = elements[i];
             BagPlaid newPlaid = Instantiate(plaid.gameObject, group).GetComponent<BagPlaid>();
 
-            newPlaid.Ctor();
             newPlaid.Init(element);
+            newPlaid.OnPlaidClick += OnClick;
+            newPlaid.Ctor();
         }
     }
 
     public void Close()
     {
         Destroy(gameObject);
+    }
+
+    public void ClearAll()
+    {
+        for (int i = 0; i < group.childCount; i++)
+        {
+            var child = group.GetChild(i);
+
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void OnClick(int id)
+    {
+        OnPlaidClick?.Invoke(id);
     }
 }

@@ -10,6 +10,8 @@ public class UIContext
     public Pause pause;
     public Bag bag;
     public List<BagElement> bagElements;
+    public MakeSure makeSure;
+    public Letter letter;
 
     public UIContext()
     {

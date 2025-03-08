@@ -25,6 +25,9 @@ public class Main : MonoBehaviour
     bool progressTip;
     float progressProbability; // 到下一进度的概率
 
+    // 钓鱼
+    int foodID;
+
     void Awake()
     {
         uiManager.Ctor(canvas);
@@ -164,5 +167,9 @@ public class Main : MonoBehaviour
             progressProbability += 0.1f;
         }
     }
+    #endregion
+
+    #region 钓鱼
+
     #endregion
 }

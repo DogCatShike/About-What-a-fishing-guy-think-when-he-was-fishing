@@ -16,9 +16,12 @@ public class BagPlaid : MonoBehaviour
     [SerializeField] Image image;
     [SerializeField] Text txt_Num;
 
+    public Action<int> OnPlaidClick;
+
     public void Ctor()
     {
         number = 1;
+        button.onClick.AddListener(() => OnPlaidClick?.Invoke(id));
     }
 
     public void Init(BagElement element)
