@@ -2,21 +2,20 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Menu : MonoBehaviour
+public class Bag : MonoBehaviour
 {
-    RectTransform rect;
-    Button button;
+    [SerializeField] Button btn_All;
+    [SerializeField] Button btn_Food;
+    [SerializeField] Button btn_Fish;
 
-    public Action OnMenuClick;
+    [SerializeField] Button btn_LastPage;
+    [SerializeField] Button btn_NextPage;
 
-    public bool isOpenPause;
+    [SerializeField] Transform group;
 
     public void Ctor()
     {
-        rect = GetComponent<RectTransform>();
-        button = GetComponent<Button>();
-
-        button.onClick.AddListener(() => OnMenuClick?.Invoke());
+        
     }
 
     public GameObject Spawn(Canvas canvas)

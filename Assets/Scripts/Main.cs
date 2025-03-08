@@ -27,6 +27,8 @@ public class Main : MonoBehaviour
 
     void Awake()
     {
+        uiManager.Ctor(canvas);
+        
         foodNum = 0;
         foodTimer = foodTimerMax;
         foodPos = new List<Vector2>();
@@ -38,7 +40,7 @@ public class Main : MonoBehaviour
 
     void Start()
     {
-        uiManager.Menu_Show(canvas);
+        uiManager.Menu_Show();
     }
 
     void Update()
@@ -70,7 +72,6 @@ public class Main : MonoBehaviour
         {
             player.EnterFishing();
             ChangeProgress();
-            uiManager.Think_Show(canvas); //
         }
     }
 
@@ -126,10 +127,10 @@ public class Main : MonoBehaviour
             switch (progress)
             {
                 case 0:
-                    uiManager.Tip_Show(canvas, "按E键开始钓鱼");
+                    uiManager.Tip_Show("按E键开始钓鱼");
                     break;
                 case 1:
-                    uiManager.Tip_Show(canvas, "树上好像有些吃的");
+                    uiManager.Tip_Show("树上好像有些吃的");
                     break;
             }
             progressTip = true;
