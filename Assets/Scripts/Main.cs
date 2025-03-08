@@ -53,6 +53,7 @@ public class Main : MonoBehaviour
 
         // 生成食物
         foodNum = foodGroup.childCount;
+
         if (foodNum >= foodNumMax) { return; }
 
         foodTimer += dt;
@@ -115,7 +116,18 @@ public class Main : MonoBehaviour
         }
 
         uiManager.Food_Show(food, pos, foodGroup);
-        foodPos.Add(pos);
+
+        foodPos.Clear();
+        for (int i = 0; i < foodGroup.childCount; i++)
+        {
+            var child = foodGroup.GetChild(i);
+            var childPos = child.position;
+
+            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(null, childPos);
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(screenPoint);
+
+            foodPos.Add(worldPoint);
+        }
     }
     #endregion
 

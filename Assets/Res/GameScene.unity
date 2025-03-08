@@ -546,7 +546,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec54f47e9547c8d40a340103cf2a22e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodGroup: {fileID: 1576017632}
   tip: {fileID: 6250037639976830874, guid: ee46aa2aac7e5fe4bb066860efc4f490, type: 3}
   menu: {fileID: 3828012435185786170, guid: e01da2790cf461543b193641f6bdd351, type: 3}
   think: {fileID: 7200415755924910846, guid: ec05ccd4728b3eb4cb41ca3c504b1980, type: 3}
