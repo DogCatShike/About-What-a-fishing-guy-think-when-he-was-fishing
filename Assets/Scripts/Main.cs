@@ -160,7 +160,7 @@ public class Main : MonoBehaviour
             var child = foodGroup.GetChild(i);
             var childPos = child.position;
 
-            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(null, childPos);
+            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, childPos);
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(screenPoint);
 
             foodPos.Add(worldPoint);

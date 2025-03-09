@@ -47,7 +47,7 @@ public class Food : MonoBehaviour
     {
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
         Vector2 screenPos = Camera.main.WorldToScreenPoint(pos);
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, Camera.main, out Vector2 localPos);
         rect.anchoredPosition = localPos;
     }
 }
