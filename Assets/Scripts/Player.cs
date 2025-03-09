@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] Animator anim;
 
-    bool isFishing;
+    public bool isFishing;
 
     #region 钓鱼
     public void EnterFishing()

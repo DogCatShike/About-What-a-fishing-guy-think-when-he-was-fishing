@@ -4,7 +4,7 @@ using UnityEngine;
 public class BagElement
 {
     public int id;
-    Sprite sprite;
+    public Sprite sprite;
     Type type;
 
     public int number;

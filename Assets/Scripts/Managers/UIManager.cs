@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,6 +15,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Pause pause;
     [SerializeField] Bag bag;
     [SerializeField] MakeSure makeSure;
+    [SerializeField] FishFood fishFood;
+    [SerializeField] HaveFish haveFish;
 
     [SerializeField] Letter letter;
 
@@ -28,7 +31,7 @@ public class UIManager : MonoBehaviour
     }
 
     #region Tip
-    public void Tip_Show(string text)
+    public void Tip_Show_Always(string text)
     {
         var ui = uiContext.tip;
         if (ui == null)
@@ -38,6 +41,34 @@ public class UIManager : MonoBehaviour
         ui.Ctor();
         ui.Show(text);
         uiContext.tip = ui;
+    }
+
+    public float Tip_Show_2s(string text)
+    {
+        Tip_Close();
+
+        var ui = uiContext.tip;
+        if (ui == null)
+        {
+            ui = tip.Spawn(canvas).GetComponent<Tip>();
+        }
+        ui.Ctor();
+        ui.Show(text);
+        uiContext.tip = ui;
+
+        float unscaledTime = Time.unscaledTime;
+        StartCoroutine(Tip_IE(unscaledTime));
+        return unscaledTime;
+    }
+
+    IEnumerator Tip_IE(float unscaledTime)
+    {
+        while (Time.unscaledTime - unscaledTime < 2)
+        {
+            yield return null;
+        }
+
+        Tip_Close();
     }
 
     public void Tip_Close()
@@ -238,6 +269,45 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region FishFood
+    public void FishFood_SetImage(int id)
+    {
+        Sprite sprite = null;
+        for (int i = uiContext.bagElements.Count - 1; i >= 0; i--)
+        {
+            BagElement element = uiContext.bagElements[i];
+            if (element.id == id)
+            {
+                sprite = element.sprite;
+            }
+        }
+
+        fishFood.SetImage(sprite);
+    }
+    #endregion
+
+    #region HaveFish
+    public void HaveFish_Show()
+    {
+        var ui = uiContext.haveFish;
+        if (ui == null)
+        {
+            ui = haveFish.Spawn(canvas).GetComponent<HaveFish>();
+        }
+        ui.Ctor();
+        ui.Show();
+        uiContext.haveFish = ui;
+    }
+
+    public void HaveFish_Close()
+    {
+        var ui = uiContext.haveFish;
+        if (ui == null) { return; }
+        ui.Close();
+        uiContext.haveFish = null;
+    }
+    #endregion
+
     #region Letter
     public void Letter_Show()
     {
@@ -331,10 +401,16 @@ public class UIManager : MonoBehaviour
     {
         if (foodID != -1)
         {
-            Debug.Log("已经有鱼饵了");
+            Tip_Show_2s("已经有鱼饵了");
+            return;
+        }
+        if (id < 1 || id > 10)
+        {
+            Tip_Show_2s("该物品不能当作鱼饵");
             return;
         }
 
+        FishFood_SetImage(id);
         Bag_Use(id);
         foodID = id;
     }

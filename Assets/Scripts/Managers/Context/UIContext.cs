@@ -11,6 +11,7 @@ public class UIContext
     public Bag bag;
     public List<BagElement> bagElements;
     public MakeSure makeSure;
+    public HaveFish haveFish;
     public Letter letter;
 
     public UIContext()

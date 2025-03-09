@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,6 +28,11 @@ public class Main : MonoBehaviour
 
     // 钓鱼
     int foodID;
+    float waitTimer;
+    public float waitTimerMax; // 等鱼上钩
+    bool isBited; // 鱼咬钩
+    float biteTimer;
+    public float biteTimerMax; // 鱼脱钩
 
     void Awake()
     {
@@ -49,7 +55,7 @@ public class Main : MonoBehaviour
     void Update()
     {
         float dt = Time.deltaTime;
-        GetKeyDown();
+        StartFishing();
 
         // 进度
         ProgressTip();
@@ -68,14 +74,40 @@ public class Main : MonoBehaviour
 
         // 胡思乱想
         uiManager.Think_SetColor(dt);
+
+        // 钓鱼
+        waitTimer += dt;
+        biteTimer += dt;
+        foodID = uiManager.foodID;
+
+        if (isBited)
+        {
+            uiManager.HaveFish_Show();
+            CheckFishing();
+        }
+        else
+        {
+            uiManager.HaveFish_Close();
+        }
     }
 
-    void GetKeyDown()
+    void StartFishing()
     {
+        if (player.isFishing) { return; }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             player.EnterFishing();
-            ChangeProgress();
+            bool isChange = ChangeProgress();
+
+            // if (isChange)
+            // {
+            //     Debug.Log("胡思乱想");
+            // }
+            // else
+            // {
+            Fishing();
+            // }
         }
     }
 
@@ -142,17 +174,17 @@ public class Main : MonoBehaviour
             switch (progress)
             {
                 case 0:
-                    uiManager.Tip_Show("按E键开始钓鱼");
+                    uiManager.Tip_Show_Always("按E键开始钓鱼");
                     break;
                 case 1:
-                    uiManager.Tip_Show("树上好像有些吃的");
+                    uiManager.Tip_Show_Always("树上好像有些吃的");
                     break;
             }
             progressTip = true;
         }
     }
 
-    void ChangeProgress()
+    bool ChangeProgress() // true: 切换进度, false: 保持原进度
     {
         float random = UnityEngine.Random.value;
 
@@ -161,15 +193,64 @@ public class Main : MonoBehaviour
             progress += 1;
             progressTip = false;
             progressProbability = 0;
+
+            return true;
         }
         else
         {
             progressProbability += 0.1f;
+
+            return false;
         }
     }
     #endregion
 
     #region 钓鱼
+    void Fishing()
+    {
+        waitTimer = 0;
+        float maxTime = UnityEngine.Random.Range(1f, waitTimerMax);
 
+        StartCoroutine(FishingIE(maxTime));
+    }
+
+    IEnumerator FishingIE(float maxTime)
+    {
+        while (waitTimer < maxTime)
+        {
+            yield return null;
+        }
+
+        Bite();
+    }
+
+    void Bite()
+    {
+        biteTimer = 0;
+        isBited = true;
+
+        Debug.Log("鱼咬钩");
+    }
+
+    void CheckFishing()
+    {
+        if (biteTimer <= biteTimerMax)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Debug.Log("钓到鱼");
+
+                isBited = false;
+                player.ExitFishing();
+            }
+        }
+        else
+        {
+            Debug.Log("脱钩");
+
+            isBited = false;
+            player.ExitFishing();
+        }
+    }
     #endregion
 }
