@@ -5,7 +5,7 @@ public class BagElement
 {
     public int id;
     public Sprite sprite;
-    Type type;
+    public Type type;
 
     public int number;
 

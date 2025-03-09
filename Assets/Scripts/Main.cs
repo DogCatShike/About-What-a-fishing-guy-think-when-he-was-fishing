@@ -10,6 +10,7 @@ public class Main : MonoBehaviour
 
     // Food
     [SerializeField] List<Food> foods;
+    [SerializeField] List<Fish> fishes;
     [SerializeField] Transform foodGroup;
     List<Vector2> foodPos;
     int foodNum;
@@ -94,6 +95,7 @@ public class Main : MonoBehaviour
     void StartFishing()
     {
         if (player.isFishing) { return; }
+        if (uiManager.isUIShow) { return; }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -228,8 +230,6 @@ public class Main : MonoBehaviour
     {
         biteTimer = 0;
         isBited = true;
-
-        Debug.Log("鱼咬钩");
     }
 
     void CheckFishing()
@@ -238,10 +238,13 @@ public class Main : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Debug.Log("钓到鱼");
+                AddFish();
 
                 isBited = false;
                 player.ExitFishing();
+
+                uiManager.SetFoodID(-1);
+                uiManager.FishFood_SetImage(-1);
             }
         }
         else
@@ -250,7 +253,37 @@ public class Main : MonoBehaviour
 
             isBited = false;
             player.ExitFishing();
+
+            uiManager.SetFoodID(-1);
+            uiManager.FishFood_SetImage(-1);
         }
+    }
+
+    void AddFish()
+    {
+        if (foodID == 1)
+        {
+            uiManager.AddFish_Show("怎么鱼也不爱吃苹果啊", null);
+            return;
+        }
+
+        int fishID = foodID + 10;
+        int len = fishes.Count;
+        for (int i = 0; i < len; i++)
+        {
+            var fish = fishes[i];
+            if (fish.id == fishID)
+            {
+                var name = fish.name;
+                var sprite = fish.sprite;
+
+                uiManager.AddFish_Show(name, sprite);
+                uiManager.Bag_Add(fishID, sprite, fish.type);
+                return;
+            }
+        }
+
+        uiManager.AddFish_Show("空气", null);
     }
     #endregion
 }

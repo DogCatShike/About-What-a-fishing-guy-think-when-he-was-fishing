@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,10 +18,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] MakeSure makeSure;
     [SerializeField] FishFood fishFood;
     [SerializeField] HaveFish haveFish;
+    [SerializeField] AddFish addFish;
 
     [SerializeField] Letter letter;
 
     public int foodID;
+    public void SetFoodID(int id) => foodID = id;
+
+    public bool isUIShow;
 
     public void Ctor(Canvas canvas)
     {
@@ -28,6 +33,7 @@ public class UIManager : MonoBehaviour
         this.canvas = canvas;
 
         foodID = -1;
+        isUIShow = false;
     }
 
     #region Tip
@@ -177,11 +183,29 @@ public class UIManager : MonoBehaviour
             ui.OnCloseClick = () => OnCloseClick();
 
             ui.OnPlaidClick = (id) => OnPlaidClick(id);
+
+            ui.ChangeClass(0);
         }
         ui.Ctor();
         ui.ClearAll();
 
-        var elements = uiContext.bagElements;
+        List<BagElement> elements = null;
+        switch (ui.classNum)
+        {
+            case 0:
+                elements = uiContext.bagElements;
+                break;
+            case 1:
+                elements = uiContext.foodElements;
+                break;
+            case 2:
+                elements = uiContext.fishElements;
+                break;
+            default:
+                break;
+        }
+
+        ui.CheckPage(elements);
         ui.Show(elements);
         uiContext.bag = ui;
     }
@@ -230,6 +254,13 @@ public class UIManager : MonoBehaviour
         }
 
         Bag_Show();
+    }
+
+    public void Bag_ChangeClass(int a)
+    {
+        var ui = uiContext.bag;
+        if (ui == null) { return; }
+        ui.ChangeClass(a);
     }
     #endregion
 
@@ -308,6 +339,34 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region AddFish
+    public void AddFish_Show(string fishName, Sprite fishImage)
+    {
+        var ui = uiContext.addFish;
+        if (ui == null)
+        {
+            ui = addFish.Spawn(canvas).GetComponent<AddFish>();
+
+            ui.OnOKClicked = () => OnAddFishOKClicked();
+        }
+        ui.Ctor();
+        ui.Show(fishName, fishImage);
+        uiContext.addFish = ui;
+
+        isUIShow = true;
+    }
+
+    public void AddFish_Close()
+    {
+        var ui = uiContext.addFish;
+        if (ui == null) { return; }
+        ui.Close();
+        uiContext.addFish = null;
+
+        isUIShow = false;
+    }
+    #endregion
+
     #region Letter
     public void Letter_Show()
     {
@@ -369,27 +428,64 @@ public class UIManager : MonoBehaviour
     // Bag
     public void OnAllClick()
     {
-        Debug.Log("全部");
+        Bag_ChangeClass(0);
+        Bag_Show();
     }
 
     public void OnFoodClick()
     {
-        Debug.Log("食物");
+        Bag_ChangeClass(1);
+        uiContext.foodElements.Clear();
+
+        var elements = uiContext.bagElements;
+        int len = elements.Count;
+        for (int i = 0; i < len; i++)
+        {
+            BagElement element = elements[i];
+            if (element.type == Type.Food)
+            {
+                uiContext.foodElements.Add(element);
+            }
+        }
+
+        Bag_Show();
     }
 
     public void OnFishClick()
     {
-        Debug.Log("鱼");
+        Bag_ChangeClass(2);
+        uiContext.fishElements.Clear();
+
+        var elements = uiContext.bagElements;
+        int len = elements.Count;
+        for (int i = 0; i < len; i++)
+        {
+            BagElement element = elements[i];
+            if (element.type == Type.Fish)
+            {
+                uiContext.fishElements.Add(element);
+            }
+        }
+
+        Bag_Show();
     }
 
     public void OnLastPageClick()
     {
-        Debug.Log("上一页");
+        var ui = uiContext.bag;
+        if (ui == null) { return; }
+        ui.page -= 1;
+        ui.CheckPage(uiContext.bagElements);
+        ui.Show(uiContext.bagElements);
     }
 
     public void OnNextPageClick()
     {
-        Debug.Log("下一页");
+        var ui = uiContext.bag;
+        if (ui == null) { return; }
+        ui.page += 1;
+        ui.CheckPage(uiContext.bagElements);
+        ui.Show(uiContext.bagElements);
     }
 
     public void OnCloseClick()
@@ -439,6 +535,12 @@ public class UIManager : MonoBehaviour
         MakeSure_Close();
         Pause_Close();
         Time.timeScale = 1;
+    }
+
+    // AddFish
+    public void OnAddFishOKClicked()
+    {
+        AddFish_Close();
     }
 
     // Letter

@@ -265,6 +265,16 @@ MonoBehaviour:
   - {fileID: 8302600448954762704, guid: 0fb4f70b2bb76084090fa0ea86bde15b, type: 3}
   - {fileID: 3394818237826899517, guid: e5934413099bdfe4db718f430ffab7ab, type: 3}
   - {fileID: 6318461979381872358, guid: 7de3f22548337184a8600f95daab5800, type: 3}
+  fishes:
+  - {fileID: 5579941304362500742, guid: 7a7fa24acbd01174ba5f5741a84d2692, type: 3}
+  - {fileID: 2786224730770788437, guid: 4d50d375fbaf93c43bb914d8b1820876, type: 3}
+  - {fileID: 7116869926655052086, guid: 8f014cbdd0a529d4f8d710b777441334, type: 3}
+  - {fileID: 5089899208840083300, guid: c79fc1b630bdc004a98c99950ecb3ef6, type: 3}
+  - {fileID: 5577667492929015533, guid: 737e2c68a6ef926449d75125a6fd04b0, type: 3}
+  - {fileID: 314779861482956335, guid: be0fb1712758e9f429a36ad70efdaa1f, type: 3}
+  - {fileID: 918297460700739395, guid: 96d781706a68d664ba8763869564d327, type: 3}
+  - {fileID: 7818030713774551840, guid: 1de9b57fde9d1b04a9a66e0c5c10b2ee, type: 3}
+  - {fileID: 749745440662695214, guid: d1fe91099b9df084b9b9f2c0d62f837c, type: 3}
   foodGroup: {fileID: 1576017632}
   foodNumMax: 5
   foodTimerMax: 60
@@ -653,8 +663,10 @@ MonoBehaviour:
   makeSure: {fileID: 7156120052962038613, guid: e97844facfc36d74d8eeb2728ed6e88e, type: 3}
   fishFood: {fileID: 889665713}
   haveFish: {fileID: -938683554419000385, guid: 5139c21e15f9d504099c52ecdf99d319, type: 3}
+  addFish: {fileID: 8592119568550306751, guid: 2b123d91ba8acf84c8ebb30984e39b0b, type: 3}
   letter: {fileID: 0}
   foodID: 0
+  isUIShow: 0
 --- !u!1 &501574191
 GameObject:
   m_ObjectHideFlags: 0
