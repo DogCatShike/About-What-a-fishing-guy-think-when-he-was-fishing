@@ -78,21 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'New Text
-
-    New Text New Text
-
-    New Text New Text New Text
-
-    New
-    Text New Text New Text New Text
-
-    New Text New Text New Text
-
-    New Text
-    New Text
-
-    New Text'
+  m_Text: "\u521B\u610F\u548C\u7D20\u6750\u662F\u522B\u4EBA\u63D0\u4F9B\u7684\u3002\n\nunity\u90E8\u5206\u7531\u672C\u4EBA\u5B8C\u6210\u3002\u5F88\u591A\u4E0D\u4F1A\u7684\u5730\u65B9\u662F\u4E00\u8FB9\u67E5\u4E00\u8FB9\u505A\u51FA\u6765\u7684\uFF0C\u67E5\u4E0D\u5230\u7684\u6709\u95EE\nai\u3002\n\n\u4EE3\u7801\u4E2D\u6709\u5927\u91CF\u91CD\u590D\u7247\u6BB5\u662F\u590D\u5236\u7C98\u8D34\u51FA\u6765\u7684\uFF0C\u4E00\u4E9B\u5199\u6CD5\u501F\u9274\u4E86\u4E4B\u524D\u7684\u4F5C\u4E1A\u3002\n\n\u6E38\u620F\u6CA1\u6709\u5B58\u6863\uFF0C\u9000\u51FA\u6216\u8FD4\u56DE\u4E3B\u754C\u9762\u4E0D\u4F1A\u4FDD\u5B58\u8FDB\u5EA6\u3002"
 --- !u!1 &6534732527417017749
 GameObject:
   m_ObjectHideFlags: 0
