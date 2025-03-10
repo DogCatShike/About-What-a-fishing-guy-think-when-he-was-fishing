@@ -8,7 +8,9 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     UIContext uiContext;
+    public bool hasFood() => uiContext.bagElements.Count > 0;
     Canvas canvas;
+    public bool hasOpenBag;
 
     [SerializeField] Tip tip;
     [SerializeField] Menu menu;
@@ -139,6 +141,13 @@ public class UIManager : MonoBehaviour
 
         ui.SetColor(dt);
     }
+
+    public void Think_SetText(string text)
+    {
+        var ui = uiContext.think;
+        if (ui == null) { return; }
+        ui.SetText(text);
+    }
     #endregion
 
     #region Pause
@@ -208,6 +217,8 @@ public class UIManager : MonoBehaviour
         ui.CheckPage(elements);
         ui.Show(elements);
         uiContext.bag = ui;
+        
+        hasOpenBag = true;
     }
 
     public void Bag_Close()

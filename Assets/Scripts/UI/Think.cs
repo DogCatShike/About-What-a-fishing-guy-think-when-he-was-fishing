@@ -13,6 +13,8 @@ public class Think : MonoBehaviour
     Color color3;
     Color color4;
 
+    [SerializeField] Text text;
+
     public bool isShow;
 
     public void Ctor()
@@ -72,5 +74,10 @@ public class Think : MonoBehaviour
         think2.color = color2;
         think3.color = color3;
         think4.color = color4;
+    }
+
+    public void SetText(string text)
+    {
+        this.text.text = text;
     }
 }

@@ -22,6 +22,7 @@ public class Main : MonoBehaviour
     int progress;
     float progressProbability; // 到下一进度的概率
     bool isThinking;
+    [SerializeField] GameObject thinkMask;
 
     // 新手教程
     bool hasFishing;
@@ -45,6 +46,7 @@ public class Main : MonoBehaviour
     void Awake()
     {
         uiManager.Ctor(canvas);
+        thinkManager.Ctor();
 
         foodNum = 0;
         foodTimer = foodTimerMax;
@@ -66,6 +68,14 @@ public class Main : MonoBehaviour
 
         // 进度
         ProgressTip();
+        if (uiManager.hasFood())
+        {
+            hasFood = true;
+        }
+        if (!hasOpenBag)
+        {
+            hasOpenBag = uiManager.hasOpenBag;
+        }
 
         // 生成食物
         foodNum = foodGroup.childCount;
@@ -81,6 +91,7 @@ public class Main : MonoBehaviour
 
         // 胡思乱想
         uiManager.Think_SetColor(dt);
+        thinkManager.Think_Update(dt);
 
         // 钓鱼
         waitTimer += dt;
@@ -115,6 +126,8 @@ public class Main : MonoBehaviour
             {
                 uiManager.Think_Show();
                 isThinking = true;
+                Instantiate(thinkMask, canvas.transform);
+                thinkManager.Think_Start(progress);
             }
             else
             {
@@ -186,6 +199,10 @@ public class Main : MonoBehaviour
             uiManager.Tip_Show_Always("按E键开始钓鱼");
             return;
         }
+        if (hasBited)
+        {
+            return;
+        }
         if (!hasFood)
         {
             uiManager.Tip_Show_Always("树上好像有些吃的");
@@ -194,6 +211,7 @@ public class Main : MonoBehaviour
         if (!hasOpenBag)
         {
             uiManager.Tip_Show_Always("左上角按钮打开背包, 里面似乎有东西可以挂在鱼钩上");
+            return;
         }
 
         // switch (progress)
@@ -209,12 +227,6 @@ public class Main : MonoBehaviour
 
     bool ChangeProgress() // true: 切换进度, false: 保持原进度
     {
-        if (progress <= 2)
-        {
-            // 0开场, 钓一次鱼到1, 再留一波体验钓鱼玩法
-            return false;
-        }
-
         float random = UnityEngine.Random.value;
 
         if (random < progressProbability)
@@ -222,11 +234,16 @@ public class Main : MonoBehaviour
             progress += 1;
             progressProbability = 0;
 
+            if (progress <= 2)
+            {
+                return false;
+            }
+
             return true;
         }
         else
         {
-            progressProbability += 0.1f;
+            progressProbability += 1f;
 
             return false;
         }
@@ -293,6 +310,8 @@ public class Main : MonoBehaviour
 
     void AddFish()
     {
+        hasBited = false;
+        
         if (foodID == 1)
         {
             uiManager.AddFish_Show("空气", null, "怎么鱼也不爱吃苹果啊");
