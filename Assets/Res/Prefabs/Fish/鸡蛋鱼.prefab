@@ -100,3 +100,4 @@ MonoBehaviour:
   id: 19
   type: 2
   sprite: {fileID: 21300000, guid: b4c59cfe736e5e84d897d32934d7898c, type: 3}
+  spitOut: "\u756A\u8304\u7092\u86CB, \u597D\u5403, \u7ECF\u5E38\u4F1A\u88AB\u5927\u5B66\u751F\u9C7C\u8FFD\u7740\u5543"

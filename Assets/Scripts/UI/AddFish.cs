@@ -7,6 +7,7 @@ public class AddFish : MonoBehaviour
     [SerializeField] Text txt_Fish;
     [SerializeField] Image img_Fish;
     [SerializeField] Button btn_OK;
+    [SerializeField] Text txt_Txt_SpitOut;
 
     public Action OnOKClicked;
 
@@ -21,10 +22,11 @@ public class AddFish : MonoBehaviour
         return go;
     }
 
-    public void Show(string fishName, Sprite fishImage)
+    public void Show(string fishName, Sprite fishImage, string spitOut)
     {
         SetFishName(fishName);
         SetFishImage(fishImage);
+        SetSpitOut(spitOut);
         gameObject.SetActive(true);
     }
 
@@ -48,5 +50,10 @@ public class AddFish : MonoBehaviour
 
         img_Fish.sprite = fishImage;
         img_Fish.SetNativeSize();
+    }
+
+    void SetSpitOut(string spitOut)
+    {
+        txt_Txt_SpitOut.text = spitOut;
     }
 }

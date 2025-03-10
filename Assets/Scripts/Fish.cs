@@ -6,4 +6,5 @@ public class Fish : MonoBehaviour
     public int id;
     public Type type;
     public Sprite sprite;
+    public string spitOut;
 }

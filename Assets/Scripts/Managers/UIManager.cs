@@ -340,7 +340,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region AddFish
-    public void AddFish_Show(string fishName, Sprite fishImage)
+    public void AddFish_Show(string fishName, Sprite fishImage, string spitOut)
     {
         var ui = uiContext.addFish;
         if (ui == null)
@@ -350,7 +350,7 @@ public class UIManager : MonoBehaviour
             ui.OnOKClicked = () => OnAddFishOKClicked();
         }
         ui.Ctor();
-        ui.Show(fishName, fishImage);
+        ui.Show(fishName, fishImage, spitOut);
         uiContext.addFish = ui;
 
         isUIShow = true;

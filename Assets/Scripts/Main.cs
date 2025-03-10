@@ -18,14 +18,16 @@ public class Main : MonoBehaviour
     float foodTimer;
     public float foodTimerMax;
 
-    // UI
-    [SerializeField] Canvas canvas;
-    [SerializeField] UIManager uiManager;
-
     // 进度
     int progress;
-    bool progressTip;
     float progressProbability; // 到下一进度的概率
+    bool isThinking;
+
+    // 新手教程
+    bool hasFishing;
+    bool hasFood;
+    bool hasOpenBag;
+    bool hasBited;
 
     // 钓鱼
     int foodID;
@@ -34,6 +36,11 @@ public class Main : MonoBehaviour
     bool isBited; // 鱼咬钩
     float biteTimer;
     public float biteTimerMax; // 鱼脱钩
+
+    // UI
+    [SerializeField] Canvas canvas;
+    [SerializeField] UIManager uiManager;
+    [SerializeField] ThinkManager thinkManager;
 
     void Awake()
     {
@@ -44,7 +51,6 @@ public class Main : MonoBehaviour
         foodPos = new List<Vector2>();
 
         progress = 0;
-        progressTip = false;
         progressProbability = 1;
     }
 
@@ -96,20 +102,24 @@ public class Main : MonoBehaviour
     {
         if (player.isFishing) { return; }
         if (uiManager.isUIShow) { return; }
+        if (isThinking) { return; }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            if (!hasFishing) { hasFishing = true; }
+
             player.EnterFishing();
             bool isChange = ChangeProgress();
 
-            // if (isChange)
-            // {
-            //     Debug.Log("胡思乱想");
-            // }
-            // else
-            // {
-            Fishing();
-            // }
+            if (isChange)
+            {
+                uiManager.Think_Show();
+                isThinking = true;
+            }
+            else
+            {
+                Fishing();
+            }
         }
     }
 
@@ -171,29 +181,45 @@ public class Main : MonoBehaviour
     #region 进度
     void ProgressTip()
     {
-        if (!progressTip)
+        if (!hasFishing)
         {
-            switch (progress)
-            {
-                case 0:
-                    uiManager.Tip_Show_Always("按E键开始钓鱼");
-                    break;
-                case 1:
-                    uiManager.Tip_Show_Always("树上好像有些吃的");
-                    break;
-            }
-            progressTip = true;
+            uiManager.Tip_Show_Always("按E键开始钓鱼");
+            return;
         }
+        if (!hasFood)
+        {
+            uiManager.Tip_Show_Always("树上好像有些吃的");
+            return;
+        }
+        if (!hasOpenBag)
+        {
+            uiManager.Tip_Show_Always("左上角按钮打开背包, 里面似乎有东西可以挂在鱼钩上");
+        }
+
+        // switch (progress)
+        // {
+        //     case 0:
+        //         uiManager.Tip_Show_Always("按E键开始钓鱼");
+        //         break;
+        //     case 1:
+        //         uiManager.Tip_Show_Always("树上好像有些吃的");
+        //         break;
+        // }
     }
 
     bool ChangeProgress() // true: 切换进度, false: 保持原进度
     {
+        if (progress <= 2)
+        {
+            // 0开场, 钓一次鱼到1, 再留一波体验钓鱼玩法
+            return false;
+        }
+
         float random = UnityEngine.Random.value;
 
         if (random < progressProbability)
         {
             progress += 1;
-            progressTip = false;
             progressProbability = 0;
 
             return true;
@@ -230,6 +256,12 @@ public class Main : MonoBehaviour
     {
         biteTimer = 0;
         isBited = true;
+
+        if (!hasBited)
+        {
+            hasBited = true;
+            uiManager.Tip_Show_2s("鱼上钩了, 在他跑掉之前按E收线");
+        }
     }
 
     void CheckFishing()
@@ -263,7 +295,7 @@ public class Main : MonoBehaviour
     {
         if (foodID == 1)
         {
-            uiManager.AddFish_Show("怎么鱼也不爱吃苹果啊", null);
+            uiManager.AddFish_Show("空气", null, "怎么鱼也不爱吃苹果啊");
             return;
         }
 
@@ -276,14 +308,15 @@ public class Main : MonoBehaviour
             {
                 var name = fish.name;
                 var sprite = fish.sprite;
+                var spitOut = fish.spitOut;
 
-                uiManager.AddFish_Show(name, sprite);
+                uiManager.AddFish_Show(name, sprite, spitOut);
                 uiManager.Bag_Add(fishID, sprite, fish.type);
                 return;
             }
         }
 
-        uiManager.AddFish_Show("空气", null);
+        uiManager.AddFish_Show("空气", null, "好像这个游戏的主角不叫姜太公");
     }
     #endregion
 }
