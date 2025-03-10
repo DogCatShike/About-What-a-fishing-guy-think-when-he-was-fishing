@@ -23,12 +23,14 @@ public class Main : MonoBehaviour
     float progressProbability; // 到下一进度的概率
     bool isThinking;
     [SerializeField] GameObject thinkMask;
+    GameObject mask;
 
     // 新手教程
     bool hasFishing;
     bool hasFood;
     bool hasOpenBag;
     bool hasBited;
+    bool isEnd;
 
     // 钓鱼
     int foodID;
@@ -46,7 +48,7 @@ public class Main : MonoBehaviour
     void Awake()
     {
         uiManager.Ctor(canvas);
-        thinkManager.Ctor();
+        thinkManager.Ctor(uiManager);
 
         foodNum = 0;
         foodTimer = foodTimerMax;
@@ -93,6 +95,14 @@ public class Main : MonoBehaviour
         uiManager.Think_SetColor(dt);
         thinkManager.Think_Update(dt);
 
+        if (isThinking && !thinkManager.isThinking)
+        {
+            uiManager.Think_Close();
+            isThinking = false;
+            Destroy(mask);
+            player.ExitFishing();
+        }
+
         // 钓鱼
         waitTimer += dt;
         biteTimer += dt;
@@ -126,8 +136,9 @@ public class Main : MonoBehaviour
             {
                 uiManager.Think_Show();
                 isThinking = true;
-                Instantiate(thinkMask, canvas.transform);
+                mask = Instantiate(thinkMask, canvas.transform);
                 thinkManager.Think_Start(progress);
+                isEnd = true;
             }
             else
             {
@@ -211,6 +222,11 @@ public class Main : MonoBehaviour
         if (!hasOpenBag)
         {
             uiManager.Tip_Show_Always("左上角按钮打开背包, 里面似乎有东西可以挂在鱼钩上");
+            return;
+        }
+        if (isEnd)
+        {
+            uiManager.Tip_Show_Always("之后就没有其他内容了");
             return;
         }
 

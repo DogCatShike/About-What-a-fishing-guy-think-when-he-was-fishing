@@ -10,7 +10,10 @@ public class ThinkScene : MonoBehaviour
     public Transform GetPlayer() => player;
 
     public List<ThinkPage> pages = new List<ThinkPage>();
-    int nowPage = 0;
+    public int nowPage = 0;
+
+    public GameObject winObj;
+    bool startLastPage;
 
     public GameObject Spawn(Transform think)
     {
@@ -20,20 +23,19 @@ public class ThinkScene : MonoBehaviour
 
     public string OnClick()
     {
-        nowPage += 1;
-
-        if (nowPage >= pages.Count)
+        if (nowPage >= pages.Count - 1)
         {
-            Debug.Log("当前think结束");
             return null;
         }
+
+        nowPage += 1;
 
         for (int i = 0; i < pages.Count; i++)
         {
             pages[i].gameObject.SetActive(i == nowPage);
         }
 
-        return pages[nowPage].Text;
+        return pages[nowPage].text;
     }
 
     public void ThinkGame(float dt)
@@ -45,5 +47,26 @@ public class ThinkScene : MonoBehaviour
         {
             page.Game_Alien(dt);
         }
+        
+        if (!startLastPage)
+        {
+            if (winObj.activeSelf)
+            {
+                startLastPage = true;
+            }
+        }
+    }
+
+    public bool IsWin()
+    {
+        if (startLastPage)
+        {
+            if (!winObj.activeSelf)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

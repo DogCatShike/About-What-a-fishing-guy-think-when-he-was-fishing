@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ThinkPage : MonoBehaviour
 {
-    public string Text;
+    public string text;
 
     public bool isGame;
 
@@ -12,6 +13,7 @@ public class ThinkPage : MonoBehaviour
         var enemy = gameObject.transform.Find("Enemy");
 
         var pos = enemy.position;
-        pos.y -= 10 * dt;
+        pos.y -= 3 * dt;
+        enemy.position = pos;
     }
 }

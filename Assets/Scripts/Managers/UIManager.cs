@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -534,6 +533,7 @@ public class UIManager : MonoBehaviour
         if (a == 0)
         {
             SceneManager.LoadScene(0);
+            Time.timeScale = 1;
         }
         else if (a == 1)
         {
